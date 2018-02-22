@@ -1,0 +1,23 @@
+{
+  "name": "razer_colors",
+  "version": "1.0.0",
+  "description": "Interactive coloring of Razer peripherals",
+  "main": "razercolors.js",
+  "scripts": {
+    "start": "ts-node minimal_game_client.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mike Blouin <mb@xbox.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@chromasdk/chromajs": "^0.1.0",
+    "@types/ws": "^4.0.1",
+    "beam-interactive-node2": "^2.4.0",
+    "ts-node": "^5.0.0",
+    "typescript": "^2.7.2",
+    "ws": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.24"
+  }
+}
