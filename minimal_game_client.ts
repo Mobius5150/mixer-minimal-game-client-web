@@ -1,4 +1,4 @@
-import {ShortcodeAuthClient, IAccessToken, LocalTokenStore} from '../mixer-shortcode-auth';
+import {ShortcodeAuthClient, IAccessToken, LocalTokenStore} from 'mixer-shortcode-oauth';
 import { GameClient, setWebSocket, } from 'beam-interactive-node2';
 import * as ws from 'ws';
 import * as fs from 'fs';

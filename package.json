@@ -13,6 +13,7 @@
     "@chromasdk/chromajs": "^0.1.0",
     "@types/ws": "^4.0.1",
     "beam-interactive-node2": "^2.4.0",
+    "mixer-shortcode-oauth": "^1.0.2",
     "ts-node": "^5.0.0",
     "typescript": "^2.7.2",
     "ws": "^3.3.3"
