@@ -16,7 +16,7 @@ You'll receive a prompt in your command line to enter a shortcode on Mixer. Do t
 
 ## Custom Scene Data
 If you need controls or scenes to be configured, add this to minimal_game_client.ts:
-```json
+```javascript
 const scenesArray = [
     {
       sceneID: "default",
