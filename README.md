@@ -19,11 +19,12 @@ If you need controls or scenes to be configured, add this to minimal_game_client
 ```javascript
 const scenesArray = [
     {
-      sceneID: "default",
-      // @ts-ignore
-      controls: [],
+	  sceneID: "default",
+	  
+	  /* Define controls */
+	  controls: [],
 
-      // @ts-ignore
+	  /* Define containers (optional, remove if not used) */
       containers: []
     }
   ];
