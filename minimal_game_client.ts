@@ -41,12 +41,11 @@ class MinimalGameClient {
     constructor(authToken: AuthToken) {
         this.client = new GameClient();
 
-        this.client.on('open', () => { console.log("Interactive connected"); });
+        this.client.on('open', () => this.mixerClientOpened());
         this.client.on('error', e => console.error('interactive error: ', e));
 
         this.client
             .open(authToken)
-            .then(() => this.mixerClientOpened())
             .catch(this.gameClientError);
     }
 
