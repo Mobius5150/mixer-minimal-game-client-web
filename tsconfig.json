@@ -39,7 +39,6 @@
     },
     "exclude": [
         "node_modules",
-        "chroma-js/node_modules",
         "test",
         "dist",
         "lib",

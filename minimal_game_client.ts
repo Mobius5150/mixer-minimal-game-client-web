@@ -1,7 +1,8 @@
-import {ShortcodeAuthClient, IAccessToken, LocalTokenStore} from 'mixer-shortcode-oauth';
-import { GameClient, setWebSocket, } from 'beam-interactive-node2';
-import * as ws from 'ws';
-import * as fs from 'fs';
+import {ShortcodeAuthClient} from 'mixer-shortcode-oauth/lib/src/ShortcodeAuthClient';
+import {CookieTokenStore} from 'mixer-shortcode-oauth/lib/src/CookieTokenStore';
+import {IAccessToken} from 'mixer-shortcode-oauth';
+import {GameClient} from 'beam-interactive-node2';
+import {loadFile, updateStatusText} from './util';
 
 // Place your app info in mixerauth.json, schema is:
 // {
@@ -81,74 +82,74 @@ class MinimalGameClient {
     }
 }
 
-setWebSocket(ws);
-fs.readFile(authfile, { encoding: 'utf8' }, (error, contents) => {
+loadFile(authfile, (error, contents) => {
     if (error) {
         console.error('Error loading auth token: ', error);
-        process.exit(1);
+        return;
     }
 
     try {
-        let authToken = JSON.parse(contents) as ClientInformation;
-        if (typeof authToken.clientId !== 'string') {
+        const interactiveClientInfo = JSON.parse(contents) as ClientInformation;
+        if (typeof interactiveClientInfo.clientId !== 'string') {
             throw "clientId was not a string";
         }
 
-        if (typeof authToken.clientSecret !== 'string' && authToken.clientSecret !== null) {
+        if (typeof interactiveClientInfo.clientSecret !== 'string' && interactiveClientInfo.clientSecret !== null) {
             throw "clientSecret was not a string or null";
         }
 
-        if (typeof authToken.versionId !== 'number') {
+        if (typeof interactiveClientInfo.versionId !== 'number') {
             throw "versionId was not a number";
         }
 
         const authInfo = {
-            client_id: authToken.clientId, 
-            client_secret: authToken.clientSecret, 
+            client_id: interactiveClientInfo.clientId, 
+            client_secret: interactiveClientInfo.clientSecret, 
             scopes: [
                 'interactive:manage:self',
-                'interactive:play',
                 'channel:teststream:view:self',
                 'interactive:robot:self'
             ]
         };
 
-        const store = new LocalTokenStore(__dirname + '/mixertoken.json');
+        const store = new CookieTokenStore('mixerAuth');
         const auth = new ShortcodeAuthClient(authInfo, store);
         auth.on('code', (code) => {
             console.log(`Go to https://mixer.com/go and enter code ${code}...`);
+            updateStatusText(`awaiting shortcode auth. Go to <a href='https://mixer.com/go?code=${code}' target='_blank'>https://mixer.com/go</a> and enter code ${code}`, 'orange');
         });
 
         auth.on('authorized', (token: IAccessToken) => {
             console.log("Got token!", token);
+            updateStatusText('authorized', 'green');
 
             // @ts-ignore
             const _instance = new MinimalGameClient(
                 {
                     authToken: token.access_token,
-                    versionId: authToken.versionId
+                    versionId: interactiveClientInfo.versionId
                 });
         });
 
         auth.on('expired', () => {
             console.error('Auth request expired');
-            process.exit(1);
+            updateStatusText('error: auth request expired', 'red');
         });
 
         auth.on('declined', () => {
             console.error('Auth request declined');
-            process.exit(1);
+            updateStatusText('error: auth request expired', 'red');
         });
 
         auth.on('error', (e: Error) => {
             console.error('Auth error:', e);
-            process.exit(1);
+            updateStatusText('error: ' + e.message, 'red');
         })
 
         auth.doAuth();
     }
     catch (e) {
         console.error('Error processing token: ', e);
-        process.exit(1);
+        updateStatusText('unknown error', 'red');
     }
 });

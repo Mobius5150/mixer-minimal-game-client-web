@@ -1,23 +1,25 @@
 {
-  "name": "minimal_game_client",
+  "name": "minimal_game_client_web",
   "version": "1.0.0",
-  "description": "A minimal game client for Mixer",
-  "main": "dist/minimal_game_client/minimal_game_client.js",
+  "description": "A minimal game client for Mixer that runs in a browser",
   "scripts": {
-    "start": "ts-node minimal_game_client.ts",
+    "start": "serve",
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mike Blouin <mb@xbox.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "@types/ws": "^4.0.1",
-    "beam-interactive-node2": "^2.4.0",
-    "mixer-shortcode-oauth": "^1.0.2",
-    "ts-node": "^5.0.0",
-    "typescript": "^2.7.2",
-    "ws": "^3.3.3"
+    "beam-interactive-node2": "^2.7.2",
+    "mixer-shortcode-oauth": "^1.0.3"
   },
   "devDependencies": {
-    "@types/node": "^8.0.24"
+    "@types/node": "^8.0.24",
+    "serve": "^6.5.2",
+    "ts-loader": "^4.0.1",
+    "ts-node": "^5.0.0",
+    "typescript": "^2.7.2",
+    "webpack": "^4.1.0",
+    "webpack-cli": "^2.0.10"
   }
 }
